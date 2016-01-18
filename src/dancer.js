@@ -29,6 +29,20 @@ Dancer.prototype.setPosition = function(top, left) {
     this.$node.css(styleSettings);
   };
 
+Dancer.prototype.moveTo = function(top, left){
+  this.$node.velocity({
+    'top': top+"px",
+    'left': left+"px"
+}, {
+      queue: false,
+      duration: this.timeBetweenSteps
+    });
+};
+
+
+//
+// CHILD CLASSES
+// 
 var BlinkyDancer = function(top, left, timeBetweenSteps) {
   Dancer.call(this, top, left, timeBetweenSteps);
 };

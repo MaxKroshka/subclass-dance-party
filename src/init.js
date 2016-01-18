@@ -27,10 +27,32 @@ $(document).ready(function() {
       $("body").width() * Math.random(),
       Math.random() * 1000
     );
-    var randomRadius = Math.floor(Math.random() * 100);
+
+    dancers.push(dancer);
+    var randomRadius = Math.floor(Math.random() * 50 +20);
     var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
     dancer.$node.css('border', randomRadius +'px solid '+randomColor);
     $('body').append(dancer.$node);
-  });
 });
+  var spreadOut = function(){
+    dancers.forEach(function(dancer){
+      dancer.moveTo($("body").height() * Math.random(),
+    $("body").width() * Math.random());
+    });
+  };
 
+  var lineUp = function() {
+    var spacing = $("body").width() / dancers.length;
+    for (var i = 0; i < dancers.length; i++) { 
+      dancers[i].moveTo($('body').height()/2, spacing * i);
+    }
+  };
+
+  $('.line-up').click(function() {
+    lineUp();
+  });
+  $('.spread-out').click(function(){
+    spreadOut();
+  });
+
+});
