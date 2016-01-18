@@ -27,6 +27,8 @@ $(document).ready(function() {
       $("body").width() * Math.random(),
       Math.random() * 1000
     );
+    var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
+    dancer.$node.css('border','10px solid '+randomColor);
     $('body').append(dancer.$node);
   });
 });
