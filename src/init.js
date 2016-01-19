@@ -61,14 +61,6 @@ $(document).ready(function() {
 
       // add to screen
       $('body').append(newDancer.$node);
-
-      // // MOVE!
-      // var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      // var xDir = plusOrMinus * dancer.radius; 
-      // plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      // var yDir = plusOrMinus * dancer.radius; 
-      // newDancer.moveTo(dancer.top + xDir, dancer.left + yDir);
-      // dancer.moveTo(dancer.top - xDir, dancer.left - yDir);
       dancer.moveAwayFrom(newDancer);
       lastMoved = Date.now();
     }
