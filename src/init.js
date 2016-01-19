@@ -50,6 +50,12 @@ $(document).ready(function() {
     window.detectCollisions = true;
     spreadOut();
   });
+  var backgrounds = ['bg.jpg', 'bikini.png' ];
+  var currentBg = 0;
+  $('.bg-change').click(function() {
+    currentBg = (currentBg + 1) % backgrounds.length;
+    $('html').css( 'background', 'url(' + backgrounds[currentBg] + ')' );
+  });
   var lastMoved = 0;
   $('body').on('mouseenter', '.dancer',function(e) {
     if (Date.now() - lastMoved > 500) {
