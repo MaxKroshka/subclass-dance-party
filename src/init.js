@@ -45,17 +45,40 @@ $(document).ready(function() {
   $('.line-up').click(function() {
     window.detectCollisions = false;
     lineUp();
+    $('body').append('<span class="bubble"></span>');
   });
   $('.spread-out').click(function(){
     window.detectCollisions = true;
     spreadOut();
   });
+  
+
+
   var backgrounds = ['bg.jpg', 'bikini.png' ];
   var currentBg = 0;
+  
+  var addBubbles = function () {
+    var numBubbles = Math.floor(Math.random() * 15 + 5);
+    while (numBubbles > 0) {
+      setTimeout(function() {
+        var xPosition = Math.floor(Math.random() * $('body').width());
+        $('body').append('<span class="bubble" style="left: '+ xPosition + 'px; "></span>');
+      }, Math.floor(Math.random() * 2000));
+      numBubbles--;
+    }
+  };
+
   $('.bg-change').click(function() {
     currentBg = (currentBg + 1) % backgrounds.length;
     $('html').css( 'background', 'url(' + backgrounds[currentBg] + ')' );
+    if (currentBg === 1) {
+      addBubbles();
+    } else {
+      $('.bubble').remove();
+    }
   });
+
+
   var lastMoved = 0;
   $('body').on('mouseenter', '.dancer',function(e) {
     if (Date.now() - lastMoved > 500) {
@@ -75,5 +98,6 @@ $(document).ready(function() {
       lastMoved = Date.now();
     }
   });
+
 
 });
