@@ -22,14 +22,16 @@ $(document).ready(function() {
 
     // make a dancer with a random position
 
+    var randomRadius = Math.floor(Math.random() * 50 +20);
     var dancer = new dancerMakerFunction(
       $("body").height() * Math.random(),
       $("body").width() * Math.random(),
-      Math.random() * 1000
+      Math.random() * 1000,
+      randomRadius
     );
 
     dancers.push(dancer);
-    var randomRadius = Math.floor(Math.random() * 50 +20);
+    dancer.$node.data('arrayIndex', dancers.length - 1);
     var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
     dancer.$node.css('border', randomRadius +'px solid '+randomColor);
     $('body').append(dancer.$node);
@@ -53,6 +55,22 @@ $(document).ready(function() {
   });
   $('.spread-out').click(function(){
     spreadOut();
+  });
+  var lastMoved = 0;
+  $('body').on('mouseenter', '.dancer',function(e) {
+    if (Date.now() - lastMoved > 500) {
+      var dancer = dancers[+$(this).data('arrayIndex')];
+      var func = dancer.constructor;
+      var newDancer = new func(dancer.top, dancer.left, Math.random() * 1000, dancer.radius);
+      dancers.push(newDancer);
+      newDancer.$node.data('arrayIndex', dancers.length - 1);
+      var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
+      newDancer.$node.css('border', dancer.radius +'px solid '+randomColor);
+      $('body').append(newDancer.$node);
+      newDancer.moveTo(dancer.top+Math.random()*dancer.radius+dancer.radius/2, dancer.left+Math.random()*dancer.radius+dancer.radius/2);
+      dancer.moveTo(dancer.top-Math.random()*dancer.radius-dancer.radius/2, dancer.left-Math.random()*dancer.radius-dancer.radius/2);
+      lastMoved = Date.now();
+    }
   });
 
 });

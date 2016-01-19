@@ -1,8 +1,10 @@
 // Creates and returns a new dancer object that can step
-var Dancer = function(top, left, timeBetweenSteps) {
+var Dancer = function(top, left, timeBetweenSteps, radius) {
 
   this.timeBetweenSteps = timeBetweenSteps;
-
+  this.top = top;
+  this.left = left;
+  this.radius = radius;
   // use jQuery to create an HTML <span> tag
   this.$node = $('<span class="dancer"></span>');
 
@@ -21,7 +23,6 @@ Dancer.prototype.step = function() {
 Dancer.prototype.setPosition = function(top, left) {
     // Use css top and left properties to position our <span> tag
     // where it belongs on the page. See http://api.jquery.com/css/
-    //
     var styleSettings = {
       top: top,
       left: left
@@ -29,13 +30,16 @@ Dancer.prototype.setPosition = function(top, left) {
     this.$node.css(styleSettings);
   };
 
-Dancer.prototype.moveTo = function(top, left){
+Dancer.prototype.moveTo = function(top, left, duration){
+  duration = duration || this.timeBetweenSteps;
+  this.top = top;
+  this.left = left;
   this.$node.velocity({
     'top': top+"px",
     'left': left+"px"
 }, {
-      queue: false,
-      duration: this.timeBetweenSteps
+      'queue': false,
+      'duration': duration
     });
 };
 
@@ -43,8 +47,8 @@ Dancer.prototype.moveTo = function(top, left){
 //
 // CHILD CLASSES
 // 
-var BlinkyDancer = function(top, left, timeBetweenSteps) {
-  Dancer.call(this, top, left, timeBetweenSteps);
+var BlinkyDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
 };
 
 BlinkyDancer.prototype = Object.create(Dancer.prototype);
@@ -55,8 +59,8 @@ BlinkyDancer.prototype.step = function() {
   this.$node.velocity("callout.flash");
 };
 
-var BouncyDancer = function(top, left, timeBetweenSteps) {
-  Dancer.call(this, top, left, timeBetweenSteps);
+var BouncyDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
 };
 
 BouncyDancer.prototype = Object.create(Dancer.prototype);
@@ -67,8 +71,8 @@ BouncyDancer.prototype.step = function() {
   this.$node.velocity("callout.bounce");
 };
 
-var PulsingDancer = function(top, left, timeBetweenSteps) {
-  Dancer.call(this, top, left, timeBetweenSteps);
+var PulsingDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
 };
 
 PulsingDancer.prototype = Object.create(Dancer.prototype);
