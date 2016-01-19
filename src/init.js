@@ -22,7 +22,7 @@ $(document).ready(function() {
 
     // make a dancer with a random position
 
-    var randomRadius = Math.floor(Math.random() * 50 +20);
+    var randomRadius = Math.floor(Math.random() * 100 +50);
     var dancer = new dancerMakerFunction(
       $("body").height() * Math.random(),
       $("body").width() * Math.random(),
@@ -35,7 +35,9 @@ $(document).ready(function() {
     var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
     dancer.$node.css({ 'height':randomRadius + 'px',
                         'width':randomRadius + 'px',
-                        'background-color' : randomColor
+                        // 'background-color' : randomColor
+
+                        //'background-size': 'cover'
                     });
     $('body').append(dancer.$node);
 });
@@ -74,9 +76,9 @@ $(document).ready(function() {
       var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
       newDancer.$node.css({ 'height':dancer.radius + 'px',
                             'width': dancer.radius + 'px',
-                            'background-color' : randomColor
+                            // 'background-color' : randomColor
                           });
-      
+
       // add to screen
       $('body').append(newDancer.$node);
 

@@ -6,7 +6,8 @@ var Dancer = function(top, left, timeBetweenSteps, radius) {
   this.left = left;
   this.radius = radius;
   // use jQuery to create an HTML <span> tag
-  this.$node = $('<div class="dancer"></div>');
+  var images = ['alien.gif', 'jupiter.gif', 'astronaut.gif'];
+  this.$node = $('<div class="dancer"><img src="'+ images[Math.floor(Math.random() * images.length)] +'"></div>');
 
   this.step(); 
   this.setPosition(top, left);

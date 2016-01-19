@@ -39,6 +39,10 @@ body, a:link, a:visited, a:active{
 }
 .dancer{
   /*border:10px solid red;*/
-  border-radius:50%;
+  /*border-radius:50%;*/
   position:absolute;
+
+}
+.dancer img {
+  width:100%;
 }
