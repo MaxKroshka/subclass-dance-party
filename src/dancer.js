@@ -102,12 +102,11 @@ class BouncyDancer extends Dancer{
 }
 
 class PulsingDancer extends Dancer{
-  constructor(top, left, timeBetweenSteps, radius) {
-    super();
+  constructor(top, left, timeBetweenSteps, radius){
+    super(top, left, timeBetweenSteps, radius);
   }
   step () {
   super.step();
   this.$node.velocity("callout.pulse");
   }
 }
-
