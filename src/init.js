@@ -62,13 +62,29 @@ $(document).ready(function() {
       var dancer = dancers[+$(this).data('arrayIndex')];
       var func = dancer.constructor;
       var newDancer = new func(dancer.top, dancer.left, Math.random() * 1000, dancer.radius);
+      
+      // add to array
       dancers.push(newDancer);
       newDancer.$node.data('arrayIndex', dancers.length - 1);
+
+      // set color
       var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
       newDancer.$node.css('border', dancer.radius +'px solid '+randomColor);
+      
+      // add to screen
       $('body').append(newDancer.$node);
-      newDancer.moveTo(dancer.top+Math.random()*dancer.radius+dancer.radius/2, dancer.left+Math.random()*dancer.radius+dancer.radius/2);
-      dancer.moveTo(dancer.top-Math.random()*dancer.radius-dancer.radius/2, dancer.left-Math.random()*dancer.radius-dancer.radius/2);
+
+      // MOVE!
+      var num = Math.random(); // this will get a number between 0 and 1;
+      num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+      var xDir = num * dancer.radius * 2; 
+
+      num = Math.random(); // this will get a number between 0 and 1;
+      num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
+      var yDir = num * dancer.radius * 2; 
+      
+      newDancer.moveTo(dancer.top + xDir, dancer.left+yDir);
+      dancer.moveTo(dancer.top - xDir, dancer.left - yDir);
       lastMoved = Date.now();
     }
   });
