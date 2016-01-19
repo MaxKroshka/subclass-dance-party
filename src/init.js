@@ -75,15 +75,11 @@ $(document).ready(function() {
       $('body').append(newDancer.$node);
 
       // MOVE!
-      var num = Math.random(); // this will get a number between 0 and 1;
-      num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
-      var xDir = num * dancer.radius * 2; 
-
-      num = Math.random(); // this will get a number between 0 and 1;
-      num *= Math.floor(Math.random()*2) == 1 ? 1 : -1; // this will add minus sign in 50% of cases
-      var yDir = num * dancer.radius * 2; 
-      
-      newDancer.moveTo(dancer.top + xDir, dancer.left+yDir);
+      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var xDir = plusOrMinus * dancer.radius; 
+      plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var yDir = plusOrMinus * dancer.radius; 
+      newDancer.moveTo(dancer.top + xDir, dancer.left + yDir);
       dancer.moveTo(dancer.top - xDir, dancer.left - yDir);
       lastMoved = Date.now();
     }
