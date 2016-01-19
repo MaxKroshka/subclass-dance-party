@@ -3,15 +3,32 @@ body, html{
 }
 body{
   margin: 0px;
-  background-color:#444;
   font-size: 18px;
 }
-body, a:link, a:visited, a:active{
-  color: lightblue;
+
+html { 
+  background: url(bg.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
-.title, .addDancerButton{
+body, a:link, a:visited, a:active{
+  text-decoration: none;
+ }
+ a:hover {
+  color: white;
+ }
+.button, .title{
   padding:5px 12px;
   float:right;
+  color:lightblue;
+}
+.title {
+  float: left;
+}
+.addDancerButton {
+  color:orange;
 }
 .topbar{
   height:32px;
