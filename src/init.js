@@ -1,20 +1,9 @@
 $(document).ready(function() {
   window.dancers = [];
-
+  window.detectCollisions = true;
   $(".addDancerButton").on("click", function(event) {
-    /* This function sets up the click handlers for the create-dancer
-     * buttons on dancefloor.html. You should only need to make one small change to it.
-     * As long as the "data-dancer-maker-function-name" attribute of a
-     * class="addDancerButton" DOM node matches one of the names of the
-     * maker functions available in the global scope, clicking that node
-     * will call the function to make the dancer.
-     */
 
-    /* dancerMakerFunctionName is a string which must match
-     * one of the dancer maker functions available in global scope.
-     * A new object of the given type will be created and added
-     * to the stage.
-     */
+    window.detectCollisions = true;
     var dancerMakerFunctionName = $(this).data("dancer-maker-function-name");
 
     // get the maker function for the kind of dancer we're supposed to make
@@ -32,13 +21,7 @@ $(document).ready(function() {
 
     dancers.push(dancer);
     dancer.$node.data('arrayIndex', dancers.length - 1);
-    var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-    dancer.$node.css({ 'height':randomRadius + 'px',
-                        'width':randomRadius + 'px',
-                        // 'background-color' : randomColor
-
-                        //'background-size': 'cover'
-                    });
+    dancer.$node.css({ 'height':randomRadius + 'px', 'width':randomRadius + 'px'});
     $('body').append(dancer.$node);
 });
   var spreadOut = function(){
@@ -56,14 +39,17 @@ $(document).ready(function() {
   };
 
   $('.line-up').click(function() {
+    window.detectCollisions = false;
     lineUp();
   });
   $('.spread-out').click(function(){
+    window.detectCollisions = true;
     spreadOut();
   });
   var lastMoved = 0;
   $('body').on('mouseenter', '.dancer',function(e) {
     if (Date.now() - lastMoved > 500) {
+      window.detectCollisions = true;
       var dancer = dancers[+$(this).data('arrayIndex')];
       var func = dancer.constructor;
       var newDancer = new func(dancer.top, dancer.left, Math.random() * 1000, dancer.radius);
@@ -71,24 +57,19 @@ $(document).ready(function() {
       // add to array
       dancers.push(newDancer);
       newDancer.$node.data('arrayIndex', dancers.length - 1);
-
-      // set color
-      var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-      newDancer.$node.css({ 'height':dancer.radius + 'px',
-                            'width': dancer.radius + 'px',
-                            // 'background-color' : randomColor
-                          });
+      newDancer.$node.css({ 'height':dancer.radius + 'px', 'width': dancer.radius + 'px'});
 
       // add to screen
       $('body').append(newDancer.$node);
 
-      // MOVE!
-      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      var xDir = plusOrMinus * dancer.radius; 
-      plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-      var yDir = plusOrMinus * dancer.radius; 
-      newDancer.moveTo(dancer.top + xDir, dancer.left + yDir);
-      dancer.moveTo(dancer.top - xDir, dancer.left - yDir);
+      // // MOVE!
+      // var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      // var xDir = plusOrMinus * dancer.radius; 
+      // plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      // var yDir = plusOrMinus * dancer.radius; 
+      // newDancer.moveTo(dancer.top + xDir, dancer.left + yDir);
+      // dancer.moveTo(dancer.top - xDir, dancer.left - yDir);
+      dancer.moveAwayFrom(newDancer);
       lastMoved = Date.now();
     }
   });

@@ -11,19 +11,13 @@ var Dancer = function(top, left, timeBetweenSteps, radius) {
 
   this.step(); 
   this.setPosition(top, left);
-  // now that we have defined the dancer object, we can start setting up important parts of it by calling the methods we wrote
-  // this one sets the position to some random default point within the body
 };
 
 Dancer.prototype.step = function() {
-    // the basic dancer doesn't do anything interesting at all on each step,
-    // it just schedules the next step
     setTimeout(this.step.bind(this), this.timeBetweenSteps);
   };
   
 Dancer.prototype.setPosition = function(top, left) {
-    // Use css top and left properties to position our <span> tag
-    // where it belongs on the page. See http://api.jquery.com/css/
     var styleSettings = {
       top: top,
       left: left
@@ -31,19 +25,44 @@ Dancer.prototype.setPosition = function(top, left) {
     this.$node.css(styleSettings);
   };
 
+  var collision = function(dancer1, dancer2) {
+    return (dancer1.left < dancer2.left + dancer2.radius &&
+    dancer1.left + dancer1.radius > dancer2.left &&
+    dancer1.top < dancer2.top + dancer2.radius &&
+    dancer1.radius + dancer1.top > dancer2.top);
+    // collision detected!
+  };
+
+Dancer.prototype.findCollisions = function(){
+  if (!window.detectCollisions) {
+    return;
+  }
+  for(var i = 0; i < window.dancers.length; i++){
+    if(this !== window.dancers[i] && collision(this, window.dancers[i])){
+      this.$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
+      window.dancers[i].$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
+      this.moveAwayFrom(window.dancers[i]);
+    }
+  }
+};
+
+Dancer.prototype.moveAwayFrom = function(otherDancer) {
+      // MOVE!
+      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var xDir = plusOrMinus * this.radius; 
+      plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var yDir = plusOrMinus * this.radius; 
+      otherDancer.moveTo(this.top + xDir, this.left + yDir);
+      this.moveTo(this.top - xDir, this.left - yDir);
+};
+
+
 Dancer.prototype.moveTo = function(top, left, duration){
   duration = duration || this.timeBetweenSteps;
   this.top = top;
   this.left = left;
-  this.$node.velocity({
-    'top': top+"px",
-    'left': left+"px"
-}, {
-      'queue': false,
-      'duration': duration
-    });
+  this.$node.velocity({'top': top+"px", 'left': left+"px"}, {'queue': false, 'duration': duration, complete: this.findCollisions.bind(this)});
 };
-
 
 //
 // CHILD CLASSES
@@ -67,7 +86,6 @@ var BouncyDancer = function(top, left, timeBetweenSteps, radius) {
 BouncyDancer.prototype = Object.create(Dancer.prototype);
 BouncyDancer.prototype.constructor = BouncyDancer;
 BouncyDancer.prototype.step = function() {
-  // call the old version of step at the beginning of any call to this new version of step
   Dancer.prototype.step.call(this);
   this.$node.velocity("callout.bounce");
 };
@@ -79,7 +97,7 @@ var PulsingDancer = function(top, left, timeBetweenSteps, radius) {
 PulsingDancer.prototype = Object.create(Dancer.prototype);
 PulsingDancer.prototype.constructor = PulsingDancer;
 PulsingDancer.prototype.step = function() {
-  // call the old version of step at the beginning of any call to this new version of step
   Dancer.prototype.step.call(this);
   this.$node.velocity("callout.pulse");
 };
+
