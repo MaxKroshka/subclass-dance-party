@@ -6,7 +6,7 @@ var Dancer = function(top, left, timeBetweenSteps, radius) {
   this.left = left;
   this.radius = radius;
   // use jQuery to create an HTML <span> tag
-  this.$node = $('<span class="dancer"></span>');
+  this.$node = $('<div class="dancer"></div>');
 
   this.step(); 
   this.setPosition(top, left);

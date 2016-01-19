@@ -33,7 +33,10 @@ $(document).ready(function() {
     dancers.push(dancer);
     dancer.$node.data('arrayIndex', dancers.length - 1);
     var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-    dancer.$node.css('border', randomRadius +'px solid '+randomColor);
+    dancer.$node.css({ 'height':randomRadius + 'px',
+                        'width':randomRadius + 'px',
+                        'background-color' : randomColor
+                    });
     $('body').append(dancer.$node);
 });
   var spreadOut = function(){
@@ -69,7 +72,10 @@ $(document).ready(function() {
 
       // set color
       var randomColor = "rgb("+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+","+Math.floor(Math.random()*255)+")";
-      newDancer.$node.css('border', dancer.radius +'px solid '+randomColor);
+      newDancer.$node.css({ 'height':dancer.radius + 'px',
+                            'width': dancer.radius + 'px',
+                            'background-color' : randomColor
+                          });
       
       // add to screen
       $('body').append(newDancer.$node);
