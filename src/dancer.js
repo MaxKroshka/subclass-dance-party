@@ -6,7 +6,7 @@ var Dancer = function(top, left, timeBetweenSteps, radius) {
   this.left = left;
   this.radius = radius;
   // use jQuery to create an HTML <span> tag
-  var images = ['alien.gif', 'jupiter.gif', 'astronaut.gif'];
+  var images = ['alien.gif', 'squid.gif','cat.gif', 'astronaut.gif'];
   this.$node = $('<div class="dancer"><img src="'+ images[Math.floor(Math.random() * images.length)] +'"></div>');
 
   this.step(); 
@@ -33,10 +33,29 @@ Dancer.prototype.setPosition = function(top, left) {
     // collision detected!
   };
 
+  Dancer.prototype.bounceOffWalls = function() {
+    var duration = 100;
+    var distance = 10;
+    if (this.top < 0) {
+      this.moveTo(distance, this.left, duration);
+    }
+    else if (this.top + this.radius > $(window).height()) {
+      this.moveTo($(window).height() - this.radius - distance, this.left, duration);
+    }
+    else if (this.left < 0) {
+      this.moveTo(this.top, distance, duration);
+    }
+    else if (this.left + this.radius > $(window).width()) {
+      this.moveTo(this.top, $(window).width() - this.radius - distance, duration);
+    }
+  };
+
 Dancer.prototype.findCollisions = function(){
   if (!window.detectCollisions) {
     return;
   }
+
+  this.bounceOffWalls();
   for(var i = 0; i < window.dancers.length; i++){
     if(this !== window.dancers[i] && collision(this, window.dancers[i])){
       this.$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
