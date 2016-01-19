@@ -85,7 +85,7 @@ class BlinkyDancer extends Dancer {
   }
 
   step() { 
-    Dancer.prototype.step.call(this);
+    super.step();
     this.$node.velocity("callout.flash");
   }
 }
@@ -96,7 +96,7 @@ class BouncyDancer extends Dancer{
   }
 
   step() {
-  Dancer.prototype.step.call(this);
+  super.step();
   this.$node.velocity("callout.bounce");
   }
 }
@@ -106,7 +106,7 @@ class PulsingDancer extends Dancer{
     super();
   }
   step () {
-  Dancer.prototype.step.call(this);
+  super.step();
   this.$node.velocity("callout.pulse");
   }
 }
