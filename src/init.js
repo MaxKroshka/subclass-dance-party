@@ -4,6 +4,10 @@ $(document).ready(function() {
   $(".addDancerButton").on("click", function(event) {
 
     window.detectCollisions = true;
+    window.Dancer = Dancer;
+    window.BlinkyDancer = BlinkyDancer;
+    window.PulsingDancer = PulsingDancer;
+    window.BouncyDancer = BouncyDancer;
     var dancerMakerFunctionName = $(this).data("dancer-maker-function-name");
 
     // get the maker function for the kind of dancer we're supposed to make
@@ -67,7 +71,7 @@ $(document).ready(function() {
   $('.bg-change').click(function() {
     currentBg = (currentBg + 1) % backgrounds.length;
     $('.bg')
-    .css( 'background', 'url(./img/' + backgrounds[currentBg] + ')' )
+    .css( 'background', 'url(img/' + backgrounds[currentBg] + ')' )
     .velocity('transition.flipBounceXIn');
     if (currentBg % 2 === 1 ) {
       addBubbles();
