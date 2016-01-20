@@ -32,16 +32,16 @@ $(document).ready(function() {
   };
 
   var lineUp = function() {
+    $('.dancer').velocity('stop');
     var spacing = $("body").width() / dancers.length;
     for (var i = 0; i < dancers.length; i++) { 
-      dancers[i].moveTo($('body').height()/2, spacing * i);
+      dancers[i].moveTo($('body').height()/2 - dancers[i].radius/2, spacing * i);
     }
   };
 
   $('.line-up').click(function() {
     window.detectCollisions = false;
     lineUp();
-    $('body').append('<span class="bubble"></span>');
   });
   $('.spread-out').click(function(){
     window.detectCollisions = true;
@@ -59,7 +59,7 @@ $(document).ready(function() {
       setTimeout(function() {
         var xPosition = Math.floor(Math.random() * $('body').width());
         $('.bg').append('<span class="bubble" style="left: '+ xPosition + 'px; "></span>');
-      }, Math.floor(Math.random() * 2000));
+      }, Math.floor(Math.random() * 6000));
       numBubbles--;
     }
   };

@@ -62,8 +62,8 @@ body, a:link, a:visited, a:active{
   0% {bottom:-100px;-webkit-transform:scale(.9);opacity:0}
   1% {bottom:-100px;-webkit-transform:scale(.3);opacity:0}
   30% {bottom:-100px;-webkit-transform:scale(.8);opacity:1}
-  95% {bottom:80%;-webkit-transform:scale(.3);opacity:1}
-  99% {bottom:90%;-webkit-transform:scale(3);opacity:0}
+  95% {bottom:110%;-webkit-transform:scale(.3);opacity:1}
+  99% {bottom:110%;-webkit-transform:scale(3);opacity:0}
   100% {bottom:-100px;-webkit-transform:scale(.9);opacity:0}
 }
 .bubble {
