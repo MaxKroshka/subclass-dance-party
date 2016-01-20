@@ -52,7 +52,17 @@ $(document).ready(function() {
     spreadOut();
   });
   
-
+  var muted = false;
+  $('.mute').click(function(){
+    if(muted){
+      $(this).html('<img src="img/mute.svg">');
+      $('audio')[0].play();
+    }else{
+      $(this).html('<img src="img/unmute.svg">');
+      $('audio')[0].pause();
+    }
+    muted = !muted;
+  });
 
   var backgrounds = ['bg.jpg', 'bikini.png','deep-space.jpg', 'sea.jpg'];
   var currentBg = 0;
@@ -63,7 +73,7 @@ $(document).ready(function() {
       setTimeout(function() {
         var xPosition = Math.floor(Math.random() * $('body').width());
         $('.bg').append('<span class="bubble" style="left: '+ xPosition + 'px; "></span>');
-      }, Math.floor(Math.random() * 2000));
+      }, Math.floor(Math.random() * 6000));
       numBubbles--;
     }
   };
