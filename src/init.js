@@ -36,6 +36,7 @@ $(document).ready(function() {
   };
 
   var lineUp = function() {
+     $('.dancer').velocity('stop');
     var spacing = $("body").width() / dancers.length;
     for (var i = 0; i < dancers.length; i++) { 
       dancers[i].moveTo($('body').height()/2, spacing * i);
