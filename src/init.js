@@ -54,7 +54,7 @@ $(document).ready(function() {
   
 
 
-  var backgrounds = ['bg.jpg', 'bikini.png' ];
+  var backgrounds = ['bg.jpg', 'bikini.png','deep-space.jpg', 'sea.jpg'];
   var currentBg = 0;
   
   var addBubbles = function () {
@@ -70,10 +70,19 @@ $(document).ready(function() {
 
   $('.bg-change').click(function() {
     currentBg = (currentBg + 1) % backgrounds.length;
-    $('html').css( 'background', 'url(' + backgrounds[currentBg] + ')' );
-    if (currentBg === 1) {
+    $('.bg')
+    .css( 'background', 'url(' + backgrounds[currentBg] + ')' )
+    .velocity('transition.flipBounceXIn');
+    if (currentBg % 2 === 1 ) {
       addBubbles();
     } else {
+
+      // clear all timeouts
+      var id = window.setTimeout(function() {}, 0);
+      while (id--) {
+          window.clearTimeout(id); // will do nothing if no timeout with id is present
+      }
+      
       $('.bubble').remove();
     }
   });
