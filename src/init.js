@@ -4,10 +4,6 @@ $(document).ready(function() {
   $(".addDancerButton").on("click", function(event) {
 
     window.detectCollisions = true;
-    window.Dancer = Dancer;
-    window.BlinkyDancer = BlinkyDancer;
-    window.PulsingDancer = PulsingDancer;
-    window.BouncyDancer = BouncyDancer;
     var dancerMakerFunctionName = $(this).data("dancer-maker-function-name");
 
     // get the maker function for the kind of dancer we're supposed to make

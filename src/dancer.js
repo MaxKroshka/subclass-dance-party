@@ -1,27 +1,39 @@
-"use strict";
-class Dancer {
-  constructor(top, left, timeBetweenSteps, radius){
-    this.timeBetweenSteps = timeBetweenSteps;
-    this.top = top;
-    this.left = left;
-    this.radius = radius; 
-    var images = ['alien.gif', 'squid.gif','cat.gif', 'astronaut.gif'];
-    this.$node = $('<div class="dancer"><img src="'+ images[Math.floor(Math.random() * images.length)] +'"></div>');
-    this.step(); 
-    this.setPosition(top, left);
-  }
-  step () {
+// Creates and returns a new dancer object that can step
+var Dancer = function(top, left, timeBetweenSteps, radius) {
+
+  this.timeBetweenSteps = timeBetweenSteps;
+  this.top = top;
+  this.left = left;
+  this.radius = radius;
+  // use jQuery to create an HTML <span> tag
+  var images = ['alien.gif', 'squid.gif','cat.gif', 'astronaut.gif'];
+  this.$node = $('<div class="dancer"><img src="'+ images[Math.floor(Math.random() * images.length)] +'"></div>');
+
+  this.step(); 
+  this.setPosition(top, left);
+};
+
+Dancer.prototype.step = function() {
     setTimeout(this.step.bind(this), this.timeBetweenSteps);
-  }
-  setPosition (top, left) {
+  };
+  
+Dancer.prototype.setPosition = function(top, left) {
     var styleSettings = {
       top: top,
       left: left
     };
     this.$node.css(styleSettings);
-  }
+  };
 
-  bounceOffWalls () {
+  var collision = function(dancer1, dancer2) {
+    return (dancer1.left < dancer2.left + dancer2.radius &&
+    dancer1.left + dancer1.radius > dancer2.left &&
+    dancer1.top < dancer2.top + dancer2.radius &&
+    dancer1.radius + dancer1.top > dancer2.top);
+    // collision detected!
+  };
+
+  Dancer.prototype.bounceOffWalls = function() {
     var duration = 100;
     var distance = 10;
     if (this.top < 0) {
@@ -36,77 +48,75 @@ class Dancer {
     else if (this.left + this.radius > $(window).width()) {
       this.moveTo(this.top, $(window).width() - this.radius - distance, duration);
     }
+  };
+
+Dancer.prototype.findCollisions = function(){
+  if (!window.detectCollisions) {
+    return;
   }
 
-  collision (dancer2) {
-    return (this.left < dancer2.left + dancer2.radius &&
-    this.left + this.radius > dancer2.left &&
-    this.top < dancer2.top + dancer2.radius &&
-    this.radius + this.top > dancer2.top);
-  }
-
-  findCollisions (){
-    if (!window.detectCollisions) {
-      return;
-    }
-    this.bounceOffWalls();
-    for(var i = 0; i < window.dancers.length; i++){
-      if(this !== window.dancers[i] && this.collision(window.dancers[i])){
-        this.$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
-        window.dancers[i].$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
-        this.moveAwayFrom(window.dancers[i]);
-      }
+  this.bounceOffWalls();
+  for(var i = 0; i < window.dancers.length; i++){
+    if(this !== window.dancers[i] && collision(this, window.dancers[i])){
+      this.$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
+      window.dancers[i].$node.velocity({rotateZ: "+=360deg"}, {'queue': false});
+      this.moveAwayFrom(window.dancers[i]);
     }
   }
+};
 
-  moveAwayFrom (otherDancer) {
-    var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-    var xDir = plusOrMinus * this.radius; 
-    plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-    var yDir = plusOrMinus * this.radius; 
-    otherDancer.moveTo(this.top + xDir, this.left + yDir);
-    this.moveTo(this.top - xDir, this.left - yDir);
-  }
+Dancer.prototype.moveAwayFrom = function(otherDancer) {
+      // MOVE!
+      var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var xDir = plusOrMinus * this.radius; 
+      plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+      var yDir = plusOrMinus * this.radius; 
+      otherDancer.moveTo(this.top + xDir, this.left + yDir);
+      this.moveTo(this.top - xDir, this.left - yDir);
+};
 
-  moveTo (top, left, duration){
-    duration = duration || this.timeBetweenSteps;
-    this.top = top;
-    this.left = left;
-    this.$node.velocity({'top': top+"px", 'left': left+"px"}, {'queue': false, 'duration': duration, complete: this.findCollisions.bind(this)});
-  }
 
-}
+Dancer.prototype.moveTo = function(top, left, duration){
+  duration = duration || this.timeBetweenSteps;
+  this.top = top;
+  this.left = left;
+  this.$node.velocity({'top': top+"px", 'left': left+"px"}, {'queue': false, 'duration': duration, complete: this.findCollisions.bind(this)});
+};
+
 //
 // CHILD CLASSES
 // 
-class BlinkyDancer extends Dancer {
-  constructor(top, left, timeBetweenSteps, radius) {
-    super(top, left, timeBetweenSteps, radius);
-  }
+var BlinkyDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
+};
 
-  step() { 
-    super.step();
-    this.$node.velocity("callout.flash");
-  }
-}
+BlinkyDancer.prototype = Object.create(Dancer.prototype);
+BlinkyDancer.prototype.constructor = BlinkyDancer;
+BlinkyDancer.prototype.step = function() {
+  // call the old version of step at the beginning of any call to this new version of step
+  Dancer.prototype.step.call(this);
+  this.$node.velocity("callout.flash");
+};
 
-class BouncyDancer extends Dancer{
-  constructor(top, left, timeBetweenSteps, radius){
-    super(top, left, timeBetweenSteps, radius);
-  }
+var BouncyDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
+};
 
-  step() {
-  super.step();
+BouncyDancer.prototype = Object.create(Dancer.prototype);
+BouncyDancer.prototype.constructor = BouncyDancer;
+BouncyDancer.prototype.step = function() {
+  Dancer.prototype.step.call(this);
   this.$node.velocity("callout.bounce");
-  }
-}
+};
 
-class PulsingDancer extends Dancer{
-  constructor(top, left, timeBetweenSteps, radius){
-    super(top, left, timeBetweenSteps, radius);
-  }
-  step () {
-  super.step();
+var PulsingDancer = function(top, left, timeBetweenSteps, radius) {
+  Dancer.call(this, top, left, timeBetweenSteps, radius);
+};
+
+PulsingDancer.prototype = Object.create(Dancer.prototype);
+PulsingDancer.prototype.constructor = PulsingDancer;
+PulsingDancer.prototype.step = function() {
+  Dancer.prototype.step.call(this);
   this.$node.velocity("callout.pulse");
-  }
-}
+};
+
