@@ -60,12 +60,12 @@ class Dancer {
   }
 
   moveAwayFrom (otherDancer) {
-    var plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-    var xDir = plusOrMinus * this.radius; 
-    plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-    var yDir = plusOrMinus * this.radius; 
-    otherDancer.moveTo(this.top + xDir, this.left + yDir);
-    this.moveTo(this.top - xDir, this.left - yDir);
+    var angle = Math.random() * 2 * Math.PI;
+    var xDir = Math.cos(angle) * this.radius;
+    var yDir = Math.sin(angle) * this.radius;
+
+    otherDancer.moveTo(this.top + xDir, this.left + yDir, this.timeBetweenSteps);
+    this.moveTo(this.top - xDir, this.left - yDir, this.timeBetweenSteps);
   }
 
   moveTo (top, left, duration){
