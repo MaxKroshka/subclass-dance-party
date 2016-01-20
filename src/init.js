@@ -47,8 +47,18 @@ $(document).ready(function() {
     window.detectCollisions = true;
     spreadOut();
   });
-  
 
+  var muted = false;
+  $('.mute').click(function(){
+    if(muted){
+      $(this).html('<img src="img/mute.svg">');
+      $('audio')[0].play();
+    }else{
+      $(this).html('<img src="img/unmute.svg">');
+      $('audio')[0].pause();
+    }
+    muted = !muted;
+  });
 
   var backgrounds = ['bg.jpg', 'bikini.png','deep-space.jpg', 'sea.jpg'];
   var currentBg = 0;
