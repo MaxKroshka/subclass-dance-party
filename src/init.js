@@ -67,7 +67,7 @@ $(document).ready(function() {
   $('.bg-change').click(function() {
     currentBg = (currentBg + 1) % backgrounds.length;
     $('.bg')
-    .css( 'background', 'url(' + backgrounds[currentBg] + ')' )
+    .css( 'background', 'url(./img/' + backgrounds[currentBg] + ')' )
     .velocity('transition.flipBounceXIn');
     if (currentBg % 2 === 1 ) {
       addBubbles();
