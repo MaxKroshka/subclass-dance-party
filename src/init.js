@@ -45,7 +45,6 @@ $(document).ready(function() {
   $('.line-up').click(function() {
     window.detectCollisions = false;
     lineUp();
-    $('body').append('<span class="bubble"></span>');
   });
   $('.spread-out').click(function(){
     window.detectCollisions = true;
@@ -116,6 +115,9 @@ $(document).ready(function() {
       dancer.moveAwayFrom(newDancer);
       lastMoved = Date.now();
     }
+  });
+  $('body').on('mouseenter','bubble',function(e){
+
   });
 
 
