@@ -58,7 +58,7 @@ $(document).ready(function() {
     while (numBubbles > 0) {
       setTimeout(function() {
         var xPosition = Math.floor(Math.random() * $('body').width());
-        $('body').append('<span class="bubble" style="left: '+ xPosition + 'px; "></span>');
+        $('.bg').append('<span class="bubble" style="left: '+ xPosition + 'px; "></span>');
       }, Math.floor(Math.random() * 2000));
       numBubbles--;
     }
